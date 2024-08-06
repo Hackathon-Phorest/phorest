@@ -3,7 +3,7 @@
 }
 
 .outer {
-  /* height: calc(100vh - 80px); */
+  height: calc(100vh - 80px);
   margin-top: 80px;
   display: flex;
   flex-direction: column;
@@ -25,6 +25,9 @@
   overflow: hidden;
 }
 
+.fullscreen {
+  height: 100vh !important; /* 전체 화면 모드에서 높이를 강제로 설정 */
+}
 .bgImg.fullscreen {
   height: 100vh;
 }

@@ -1,7 +1,9 @@
 .photoGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 24px;
   width: 100%;
   height: auto;
+  padding: 8px;
+  margin-top: 44px;
 }

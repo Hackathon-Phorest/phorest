@@ -9,11 +9,18 @@ import GoodsIcon from "../assets/nav_goods_icon";
 import ProfileImgDefault from "../assets/default_profile_image.png";
 import IconWithTooltip from "./IconWithTooltip";
 
-const Navbar = ({ isLoggedIn, colorTheme }) => {
-  const [currentType, setCurrentType] = useState("사진");
-  const [currentCategory, setCurrentCategory] = useState("");
+const Navbar = ({
+  isLoggedIn,
+  colorTheme,
+  currentType,
+  setCurrentType,
+  currentCategory,
+  displayCategory,
+  displayTheme,
+  displayDivider,
+}) => {
   const isNormalTheme = colorTheme === "normal";
- 
+
   return (
     <div
       className={styles.navbarContainer}
@@ -29,7 +36,7 @@ const Navbar = ({ isLoggedIn, colorTheme }) => {
           <Logo color={isNormalTheme ? "black" : "white"} />
         </Link>
       </div>
-      <div className={styles.typesBox}>
+      <div className={styles.typesBox} style={{ display: displayTheme }}>
         <div
           className={styles.typePhoto}
           onClick={() => setCurrentType("사진")}
@@ -63,9 +70,12 @@ const Navbar = ({ isLoggedIn, colorTheme }) => {
       </div>
       <div
         className={styles.divider}
-        style={{ backgroundColor: isNormalTheme ? "#00000033" : "#FFFFFF33" }}
+        style={{
+          backgroundColor: isNormalTheme ? "#00000033" : "#FFFFFF33",
+          display: displayDivider,
+        }}
       />
-      <div className={styles.categoryBox}>
+      <div className={styles.categoryBox} style={{ display: displayCategory }}>
         <div
           className={styles.recommend}
           style={{ color: `${isNormalTheme ? "#00000066" : "#FFFFFF52"}` }}
@@ -76,7 +86,7 @@ const Navbar = ({ isLoggedIn, colorTheme }) => {
           className={styles.category}
           style={{ color: `${isNormalTheme ? "black" : "white"}` }}
         >
-          반려동물
+          {currentCategory}
         </div>
       </div>
       <div className={styles.iconsBox}>

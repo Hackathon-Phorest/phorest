@@ -1,5 +1,6 @@
 import styles from "../styles/Upload.module.css";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import UploadDetailModal from "../components/UploadDetailModal";
 
 import useHover2 from "../utils/useHover2";
@@ -11,14 +12,13 @@ import PhotoMiniscreen from "../components/PhotoMiniscreen";
 import BgMiniscreen from "../components/BgMiniscreen";
 import HashtagInput from "../components/HashtagInput";
 
-import mainPhoto from "../assets/mainPhoto1.png";
 import squareBg from "../assets/square-empty-bg.png";
 import bgImg from "../assets/bgImg1.png";
 import backButton from "../assets/btn_back_black.png";
 import profileImg from "../assets/profileImg.png";
 import uploadIcon from "../assets/icon_upload.png";
 
-const Upload = () => {
+const Upload = ({BASE_URL}) => {
   const [infoBoxHovered, setInfoBoxHovered] = useState(false);
   const [bgImgHovered, setBgImgHovered] = useState(false);
   const [photoHovered, setPhotoHovered] = useState(false);
@@ -31,9 +31,27 @@ const Upload = () => {
   const [customPageIndex, setCustomPageIndex] = useState(0);
   const [uploadImage, setUploadImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [bgPreview, setBgPreview] = useState("");
   const [modalShow, setModalShow] = useState(false);
+  const [isBgImg, setIsBgImg] = useState(false);
+  const [backgrounds, setBackgronds] = useState([]);
 
-  const photos = Array(8).fill(squareBg);
+  const fetchBgImgs = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}api/backgrounds`);
+      if (Array.isArray(response.data)) {
+        console.log(response.data);
+        setBackgronds(response.data);
+      } else {
+        console.error("응답이 배열이 아닙니다:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching bgImg data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchBgImgs();
+  }, []);
 
   const handleInfoBoxHover = () => {
     setInfoBoxHovered(true);
@@ -80,7 +98,7 @@ const Upload = () => {
     setCustomPageIndex(0);
   };
   const handleChangeBgClick = () => {
-    return; //TODO
+    setIsBgImg(true);
   };
   const handleUploadFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -96,7 +114,31 @@ const Upload = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 게시글과 해시태그 제출하는 로직 작성하기.
+    const handleUpload = (selectedOption, hashtags) => {
+      // 서버에 전송할 데이터
+      const payload = {
+        image: `${uploadImage}`,
+        title: `${title}`,
+        category: selectedOption,
+        common_background: `${selectedPhotoId}`,
+        // hashtags: hashtags, 문자열로 바꾸고 띄어쓰기 해서 보내기 TODO
+      };
+
+      // 서버에 데이터 전송
+      axios
+        .post("/api/upload", payload)
+        .then((response) => {
+          console.log("업로드 성공:", response.data);
+          // 성공 시 추가 작업
+        })
+        .catch((error) => {
+          console.error("업로드 실패:", error);
+          // 실패 시 추가 작업
+        });
+      // 모달 닫기
+      setModalShow(false);
+    };
+    // 게시글과 해시태그 제출하는 로직 작성하기. TODO
     console.log("Post submitted with hashtags:", hashtags);
   };
 
@@ -104,14 +146,19 @@ const Upload = () => {
   const photoRef = useHover2(handlePhotoHover, handlePhotoHoverOut);
   const infoBoxRef = useHover2(handleInfoBoxHover, handleInfoBoxHoverOut);
 
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
-  const handleCellClick = (index) => {
-    setSelectedPhotoIndex(index);
+  const [selectedPhotoId, setSelectedPhotoId] = useState(null);
+  const handleCellClick = (index, url) => {
+    setSelectedPhotoId(index);
+    setBgPreview(url);
   };
 
   return (
     <>
-      <UploadDetailModal show={modalShow} onHide={() => setModalShow(false)} />
+      <UploadDetailModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onSubmit={handleSubmit}
+      />
       <div className={styles.containerUpload}>
         <div className={styles.previewBox}>
           <div className={styles.previewContainer}>
@@ -122,9 +169,14 @@ const Upload = () => {
               }`}
               onClick={handleBgImgClick}
               style={{
-                backgroundImage: `url(${bgImg})`,
+                backgroundImage: isBgImg ? `url(${bgPreview})` : "none",
               }}
             >
+              {!isBgImg ? (
+                <p className={styles.bgComment}>
+                  배경을 클릭하여 변경을 시작하세요.
+                </p>
+              ) : null}
               <div
                 ref={photoRef}
                 className={`${styles.mainPhoto} ${
@@ -199,10 +251,19 @@ const Upload = () => {
                 </>
               ) : (
                 <>
-                  <BgMiniscreen src={bgImg} />
+                  {isBgImg && bgPreview !== "" && selectedPhotoId !== 0 ? (
+                    <BgMiniscreen src={bgPreview} />
+                  ) : null}
                   <UploadChangeButton
                     text="배경 변경하기"
                     onClick={handleChangeBgClick}
+                  />
+                  <div
+                    style={{
+                      width: "90%",
+                      height: "0px",
+                      borderTop: "2px solid #00000029",
+                    }}
                   />
                 </>
               )}
@@ -210,8 +271,8 @@ const Upload = () => {
             <div className={styles.custom_foot}>
               {selectedPhotoType === "bg" && (
                 <PhotoGrid
-                  photos={photos}
-                  selectedPhotoIndex={selectedPhotoIndex}
+                  photos={backgrounds}
+                  selectedPhotoIndex={selectedPhotoId}
                   onPhotoClick={handleCellClick}
                 />
               )}
