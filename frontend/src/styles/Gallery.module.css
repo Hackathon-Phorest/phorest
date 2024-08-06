@@ -16,6 +16,12 @@
   height: 100vh;
 }
 
+.innerBg {
+  position: relative;
+  height: 80vh;
+}
+
+
 .bgImg {
   width: 100%;
   height: calc(100vh - 80px);

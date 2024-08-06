@@ -17,16 +17,20 @@ const OneGallery = () => {
 
   // location.state에서 전달된 데이터 얻기
   const { id } = location.state || {};
-  console.log(id);
   const fetchData = async () => {
-        try {
-            const response = await axios.get(`${BASE_URL}/api/galleries/${id}`);
-                setGetData([response.data]);
-                console.log(response.data);
-        } catch (error) {
-            console.error("Error fetching goods data:", error);
-        }
-    };
+    if (!id) {
+        console.error("ID가 없습니다.");
+        return;
+    }
+    try {
+        const response = await axios.get(`${BASE_URL}/api/galleries/1`);
+        setGetData([response.data]);
+        console.log(getData[0])
+        
+    } catch (error) {
+        console.error("Error fetching goods data:", error);
+    }
+};
     useEffect(() => {
         fetchData();
     }, [])
@@ -49,10 +53,10 @@ const OneGallery = () => {
       ref={outerDivRef}
       style={{ height: isFullscreen ? "100vh" : "calc(100vh - 80px)" }}
     >
-      <div className={styles.inner}>
-      <img src={`http://${getData[0].background_image}`} alt="배경 사진" />
+      <div className={styles.innerBg}>
+      <img src={`http://${getData[0].background_image}`} alt="배경 사진"  style={{height:'91vh'}}/>
         <div className={styles.mainPhoto}>
-          <img src={`${getData[0].image}`} alt="메인 사진" /> {/* 전달된 이미지 사용 */}
+          <img src={getData[0].image} alt="메인 사진" /> {/* 전달된 이미지 사용 */}
         </div>
         <div className={styles.infoBox}>
           <div className={styles.userImage}>
