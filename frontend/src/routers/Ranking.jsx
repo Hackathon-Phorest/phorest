@@ -25,7 +25,7 @@ const rankingIlustButtons = [
   { id: 'all-button', label: '전체', icon: all_filter },
   { id: 'character-button', label: '캐릭터', icon: season_filter },
   { id: 'animal-button', label: '동물', icon: season_filter },
-  { id: 'object-button', label: '사물', icon: season_filter },
+  { id: 'sight-button', label: '사물', icon: season_filter },
   { id: 'etc-button', label: '기타', icon: season_filter }
 ]
 
