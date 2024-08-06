@@ -2,7 +2,6 @@ import styles from "../styles/Upload.module.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import UploadDetailModal from "../components/UploadDetailModal";
-
 import useHover2 from "../utils/useHover2";
 import useInput2 from "../utils/useInput2";
 import useDate from "../utils/useDate";
@@ -34,14 +33,15 @@ const Upload = ({ BASE_URL }) => {
   const [bgPreview, setBgPreview] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [isBgImg, setIsBgImg] = useState(false);
-  const [backgrounds, setBackgronds] = useState([]);
+  const [backgrounds, setBackgrounds] = useState([]);
+  const [selectedPhotoId, setSelectedPhotoId] = useState(null);
 
   const fetchBgImgs = async () => {
     try {
       const response = await axios.get(`${BASE_URL}api/backgrounds`);
       if (Array.isArray(response.data)) {
         console.log(response.data);
-        setBackgronds(response.data);
+        setBackgrounds(response.data);
       } else {
         console.error("응답이 배열이 아닙니다:", response.data);
       }
@@ -49,6 +49,7 @@ const Upload = ({ BASE_URL }) => {
       console.error("Error fetching bgImg data:", error);
     }
   };
+
   useEffect(() => {
     fetchBgImgs();
   }, []);
@@ -104,14 +105,14 @@ const Upload = ({ BASE_URL }) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setUploadImage(selectedFile);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagePreview(event.target.result);
+      };
+      reader.readAsDataURL(selectedFile);
     }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setImagePreview(event.target.result);
-    };
-    reader.readAsDataURL(selectedFile);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -137,7 +138,6 @@ const Upload = ({ BASE_URL }) => {
   const photoRef = useHover2(handlePhotoHover, handlePhotoHoverOut);
   const infoBoxRef = useHover2(handleInfoBoxHover, handleInfoBoxHoverOut);
 
-  const [selectedPhotoId, setSelectedPhotoId] = useState(null);
   const handleCellClick = (index, url) => {
     setSelectedPhotoId(index);
     setBgPreview(url);
@@ -155,9 +155,7 @@ const Upload = ({ BASE_URL }) => {
           <div className={styles.previewContainer}>
             <div
               ref={bgImgRef}
-              className={`${styles.bgImg} ${
-                bgImgHovered ? styles.bgImgHovered : ""
-              }`}
+              className={`${styles.bgImg} ${bgImgHovered ? styles.bgImgHovered : ""}`}
               onClick={handleBgImgClick}
               style={{
                 backgroundImage: isBgImg ? `url(${bgPreview})` : "none",
@@ -170,9 +168,7 @@ const Upload = ({ BASE_URL }) => {
               ) : null}
               <div
                 ref={photoRef}
-                className={`${styles.mainPhoto} ${
-                  photoHovered ? styles.mainPhotoHovered : ""
-                }`}
+                className={`${styles.mainPhoto} ${photoHovered ? styles.mainPhotoHovered : ""}`}
                 onClick={handlePhotoClick}
               >
                 {imagePreview === "" ? (
@@ -189,9 +185,7 @@ const Upload = ({ BASE_URL }) => {
               </div>
               <div
                 ref={infoBoxRef}
-                className={`${styles.infoBox} ${
-                  infoBoxHovered ? styles.hovered : ""
-                }`}
+                className={`${styles.infoBox} ${infoBoxHovered ? styles.hovered : ""}`}
                 onClick={handleTitleClick}
               >
                 <div className={styles.userImage}>

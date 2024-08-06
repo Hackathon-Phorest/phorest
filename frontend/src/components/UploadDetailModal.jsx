@@ -75,6 +75,13 @@ const UploadDetailModal = (props) => {
   const handleHashtagsChange = (newHashtags) => {
     setHashtags(newHashtags);
   };
+  const handleSubmit = () => {
+    const data = {
+      category: selectedOption,
+      hashtags: hashtags,
+    };
+    props.onSubmit(data);
+  };
 
   const options = [
     { value: "반려동물", label: "반려동물" },
@@ -201,6 +208,7 @@ const UploadDetailModal = (props) => {
               color: "white",
               borderRadius: "10px",
             }}
+            onClick={handleSubmit}
           >
             업로드
           </button>
