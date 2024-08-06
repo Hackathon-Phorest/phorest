@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/GoodsImg.css';
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://3.39.26.152:8000";
 
 function GoodsImgBox({ image, name, price }) {
     const navigate = useNavigate(); 

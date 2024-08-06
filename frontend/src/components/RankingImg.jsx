@@ -3,7 +3,7 @@ import rankingShadow from '../assets/ranking_shadow.png';
 import axios from 'axios';
 import '../styles/RankingImg.css';
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://3.39.26.152:8000";
 
 export default function RankingImg({ count }) {
     const [ranking, setRanking] = useState([]);

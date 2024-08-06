@@ -25,9 +25,10 @@ const goodsFilterButtons = [
     { id: 'season-button', label: '계절', icon: season_filter },
     { id: 'character-button', label: '캐릭터', icon: season_filter },
     { id: 'animal-button', label: '동물', icon: season_filter },
-    { id: 'object-button', label: '사물', icon: season_filter },
+    { id: 'sight-button', label: '풍경', icon: season_filter },
     { id: 'etc-button', label: '기타', icon: season_filter }
 ];
+
 
 export default function Goods() {
     const [view, setView] = useState(false);
