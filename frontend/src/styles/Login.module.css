@@ -1,0 +1,92 @@
+
+
+.LoginWrapper {
+    width: 100vw;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    margin-top : 80px;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5F5;
+  
+  }
+  .LoginContainer {
+    border: none;
+    background-color: #FFF;
+    width: 50%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+  }
+
+  .headerLogo {
+    margin-left : -5%;
+    width: 125%;
+    height: 125%;
+  }
+
+  .logo {
+    margin-bottom: -3%;
+  }
+  .loginBoxContainerWrap {
+    width: 80%;
+  }
+  
+  .loginBoxContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .loginBox {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .loginTitle {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+  }
+
+  .loginEnterBox {
+    color: #000;
+    padding-left: 3%;
+    width: 31rem;
+    height: 60px;
+    border-radius: 10px;
+    border: 2px solid rgba(45, 45, 45, 0.16);
+  }
+
+  .loginFinishClick {
+    display: flex;
+    width: 58.8%;
+    margin-left : 9%;  
+    margin-top : -5%;
+    padding: 23px 20%;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    background: #D9D9D9;
+  }
+  
+  .loginFinishClick:hover {
+    display: flex;
+    width: 58.8%;
+    padding: 23px 20%;
+    margin-left : 9%;  
+    margin-top : -5%;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    background: #2D2D2D;
+    color:#FFF;
+  }
