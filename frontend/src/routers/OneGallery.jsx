@@ -21,12 +21,8 @@ const OneGallery = () => {
   const fetchData = async () => {
         try {
             const response = await axios.get(`${BASE_URL}/api/galleries/${id}`);
-            if (Array.isArray(response.data)) { 
-                setGetData(response.data);
+                setGetData([response.data]);
                 console.log(response.data);
-            } else {
-                console.error("응답이 배열이 아닙니다:", response.data);
-            }
         } catch (error) {
             console.error("Error fetching goods data:", error);
         }
@@ -54,17 +50,17 @@ const OneGallery = () => {
       style={{ height: isFullscreen ? "100vh" : "calc(100vh - 80px)" }}
     >
       <div className={styles.inner}>
-      <img src={`http://${getData.background_image}`} alt="배경 사진" />
+      <img src={`http://${getData[0].background_image}`} alt="배경 사진" />
         <div className={styles.mainPhoto}>
-          <img src={`http://${getData.image}`} alt="메인 사진" /> {/* 전달된 이미지 사용 */}
+          <img src={`${getData[0].image}`} alt="메인 사진" /> {/* 전달된 이미지 사용 */}
         </div>
         <div className={styles.infoBox}>
           <div className={styles.userImage}>
-            <img src={`http://${getData.profile_image}`} alt="User Profile Image" />
+            <img src={`http://${getData[0].profile_image}`} alt="User Profile Image" />
           </div>
           <div className={styles.textContent}>
-            <div className={styles.title}>{getData.title || "제목이 없습니다."}</div> {/* 전달된 제목 사용 */}
-            <div className={styles.date}>{getData.upload_date || "날짜 정보가 없습니다."}</div> {/* 전달된 날짜 사용 */}
+            <div className={styles.title}>{getData[0].title || "제목이 없습니다."}</div> {/* 전달된 제목 사용 */}
+            <div className={styles.date}>{getData[0].upload_date || "날짜 정보가 없습니다."}</div> {/* 전달된 날짜 사용 */}
           </div>
         </div>
         <div className={styles.sideBtns}>

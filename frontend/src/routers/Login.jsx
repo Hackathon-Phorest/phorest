@@ -1,7 +1,7 @@
 import styles from "../styles/Login.module.css";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom"; // useNavigate로 변경
-import naverLogin from '../assets/naverLogin.png';
+import naverLoginImg from '../assets/naverLogin.png';
 import { useState } from "react";
 import axios from 'axios';
 
@@ -15,9 +15,9 @@ export default function Login() {
     const handleLogin = async () => {
         if (email && password) {
             try {
-                const response = await axios.post(`${BASE_URL}/api/login`, {
-                    email,
-                    password
+                const response = await axios.post(`${BASE_URL}/api/login/`, {
+                    email : email,
+                    password : password
                 });
                 // 로그인 성공 시 페이지 이동
                 navigate('/'); // 성공적으로 로그인한 후 메인 페이지로 이동
@@ -26,6 +26,20 @@ export default function Login() {
             }
         }
     };
+
+    const naverLogin = async () => {
+        try {
+            // 네이버 로그인 페이지로 리다이렉트
+            window.location.href = `${BASE_URL}/api/naverlogin/`;
+        } catch (error) {
+            console.error("Error fetching goods data:", error);
+        }
+        
+    }
+    const handleLoginSuccess = (redirectUrl) => {
+        // 성공적으로 로그인한 후 원하는 경로로 네비게이트
+        navigate(redirectUrl || '/'); // 기본적으로 루트로 이동
+    }
 
     return (
         <div className={styles.LoginWrapper}>
@@ -66,7 +80,7 @@ export default function Login() {
                 </div>
 
                 <p style={{ marginTop: '-5%' }}>SNS로 간편하게 회원가입하기</p>
-                <img style={{ marginTop: '-7%', width: '30%', height: '9%' }} src={naverLogin} />
+                <img onClick={naverLogin} style={{ marginTop: '-7%', width: '30%', height: '9%' }} src={naverLoginImg} />
                 <div style={{ width: '100%', alignItems: 'center', justifyContent: 'center', display: 'flex', marginTop: '-4%', gap: '1%' }}>
                     <p style={{ color: "rgba(0, 0, 0, 0.40)", fontSize: '16px', fontStyle: 'normal', fontWeight: '500', lineHeight: '16px' }}>아직 회원이 아니라면?</p>
                     <Link to='/signup' style={{ fontStyle: 'none' }}>

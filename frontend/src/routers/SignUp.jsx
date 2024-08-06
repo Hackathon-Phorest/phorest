@@ -32,15 +32,15 @@ const SignUp = () => {
   const handleSignup = async () => {
     if (email && password && name && phone && username) {
       try {
-        const response = await axios.post(`${BASE_URL}/api/users`, {
-          email,
-          password,
-          name,
-          phone,
-          username,
-          subscribed: clickAgreement === 1 // 동의 여부
+        const response = await axios.post(`${BASE_URL}/api/users/`, {
+          email : email,
+          password : password,
+          name : name,
+          phone : phone,
+          username : username,
+          subscribed:  clickAgreement === 1// 동의 여부
         });
-        console.log(response);
+        
         // 회원가입 성공 시 페이지 이동
         navigate('/login'); // 성공적으로 가입한 후 메인 페이지로 이동
       } catch (error) {
