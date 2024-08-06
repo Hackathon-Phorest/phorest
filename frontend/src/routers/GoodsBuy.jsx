@@ -37,7 +37,7 @@ export default function GoodsBuy() {
             <p className="GoodsBuy-producer">{itemName}</p>
             <p className="GoodsBuy-introduction">{itemName}</p>
             <p className="GoodsBuy-introduction-price">
-              {formatPrice(itemPrice)}
+              {`${formatPrice(itemPrice)}원`}
             </p>
           </div>
           <div className="GoodsBuy-line"></div>
@@ -56,14 +56,14 @@ export default function GoodsBuy() {
                 <img src={goodsBuyminus} alt="마이너스기호" />
               </button>
               <span className="GoodsBuy-countPrice">
-                {formatPrice(count * itemPrice)}
+              {`${formatPrice(count * itemPrice)}원`}
               </span>
             </div>
           </div>
           <div className="GoodsBuy-totalPrice-box">
             <div className="GoodsBuy-price-description">총 가격</div>
             <div className="GoodsBuy-totalPrice">
-              {formatPrice(count * itemPrice)}
+              {`${formatPrice(count * itemPrice)}원`}
             </div>
           </div>
           <button className="GoodsBuy-button" onClick={handleBuy}>

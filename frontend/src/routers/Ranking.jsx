@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import all_filter from '../assets/ranking-all-filter.svg';
 import pet_filter from '../assets/ranking-pet-filter.svg';
 import ocean_filter from '../assets/ranking-ocean-filter.svg';
@@ -21,6 +20,14 @@ const rankingFilterButtons = [
   { id: 'camping-button', label: '캠핑', icon: camping_filter },
   { id: 'season-button', label: '계절', icon: season_filter }
 ];
+
+const rankingIlustButtons = [
+  { id: 'all-button', label: '전체', icon: all_filter },
+  { id: 'character-button', label: '캐릭터', icon: season_filter },
+  { id: 'animal-button', label: '동물', icon: season_filter },
+  { id: 'object-button', label: '사물', icon: season_filter },
+  { id: 'etc-button', label: '기타', icon: season_filter }
+]
 
 export default function Ranking() { 
   const [selectedCategory, setSelectedCategory] = useState('all-button'); 

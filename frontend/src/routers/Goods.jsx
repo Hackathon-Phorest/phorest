@@ -29,6 +29,7 @@ const goodsFilterButtons = [
     { id: 'etc-button', label: '기타', icon: season_filter }
 ];
 
+
 export default function Goods() {
     const [view, setView] = useState(false);
     const [selectedSort, setSelectedSort] = useState('최신순'); 

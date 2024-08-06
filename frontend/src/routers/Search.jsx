@@ -10,7 +10,7 @@ import array_drop_up from '../assets/arrow_drop_up.svg';
 import search from '../assets/search.svg';
 import favorite from '../assets/favorite.svg';
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://3.39.26.152:8000";
 
 export default function Search() {
     const [content, setContent] = useState([]);

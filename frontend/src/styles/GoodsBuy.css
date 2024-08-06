@@ -21,10 +21,14 @@
     align-items: center;
     padding: 0; 
     margin: 0; 
+    position: relative;
 }
 
 .GoodsBuy-img {
-    height: 100%;
+    position: absolute;
+    top : -1.2%;
+    left : 0%;
+    height: 101.4%;
     width: 100%;
     object-fit: cover; 
 }

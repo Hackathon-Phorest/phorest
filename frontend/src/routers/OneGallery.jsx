@@ -7,7 +7,7 @@ import likeBlackIcon from "../assets/icon_like_black.png";
 import { useLocation } from "react-router-dom"; // useLocation 추가
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://3.39.26.152:8000";
 
 const OneGallery = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
