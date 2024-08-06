@@ -110,10 +110,7 @@ function App() {
             />
           }
         />
-<<<<<<< HEAD
-=======
         <Route path="/mypage" element={<Mypage />} />
->>>>>>> 0c590e1e (ddd)
         <Route path="/signup" element={<SignUp />} />
         <Route path="/search" element={<Search />} />
         <Route path="/oneGallery" element={<OneGallery />} />
