@@ -18,6 +18,7 @@ import GoodsBuy from "./routers/GoodsBuy";
 import Search from "./routers/Search";
 import OneGallery from "./routers/OneGallery";
 import Login from "./routers/Login";
+import Mypage from "./routers/Mypage";
 import PostWithHashtags from "./routers/Test";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -95,7 +96,7 @@ function App() {
         />
         {/* <Route path="/navbar" element={<Navbar />} /> */}
         <Route path="/login" element={<Login />} />
-        <Route path="/ranking" element={<Ranking />} />
+        <Route path="/ranking" element={<Ranking />} curr/>
         <Route path="/goods" element={<Goods />} />
         <Route path="/goodsbuy" element={<GoodsBuy />} />
         <Route path="/upload" element={<Upload BASE_URL={BASE_URL} />} />
@@ -109,6 +110,10 @@ function App() {
             />
           }
         />
+<<<<<<< HEAD
+=======
+        <Route path="/mypage" element={<Mypage />} />
+>>>>>>> 0c590e1e (ddd)
         <Route path="/signup" element={<SignUp />} />
         <Route path="/search" element={<Search />} />
         <Route path="/oneGallery" element={<OneGallery />} />

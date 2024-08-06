@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import useHover2 from "../utils/useHover2";
 import useFullscreen from "../utils/useFullscreen4";
-
 import RoundButton from "../components/RoundButton";
 import zoomInIcon from "../assets/icon_zoom_in.png";
 import zoomOutIcon from "../assets/icon_zoom_out.png";
 import likeRedIcon from "../assets/icon_like_red.png";
 import likeBlackIcon from "../assets/icon_like_black.png";
+import nextIndexBtn from "../assets/arrow_double_bottom.png";
+import prevIndexBtn from "../assets/arrow_double_top.png";
 
 const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
   const [infoBoxHovered, setInfoBoxHovered] = useState(false);
@@ -23,181 +24,132 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
   const [totalPageCount, setTotalPageCount] = useState(1);
 
   useEffect(() => {
-    const handleResize = () => {
-      setCurrentHeight(window.innerHeight - (isFullscreen ? 0 : 80));
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize(); // 컴포넌트 마운트 시에도 호출
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isFullscreen]);
-
-  useEffect(() => {
-    const wheelHandler = (e) => {
-      e.preventDefault();
-      const { deltaY } = e;
-      const scrollTop = outerDivRef.current.scrollTop;
-      const maxScrollTop = galleries.length * currentHeight - currentHeight;
-
-      if (scrollTop <= 0 && deltaY < 0) {
-        changePage(true);
-        console.log(scrollTop);
-      } else if (scrollTop >= maxScrollTop && deltaY > 0) {
-        changePage(false);
-      } else {
-        setCurrentIndex(Math.round(scrollTop / currentHeight));
-        outerDivRef.current.scrollTo({
-          top: currentHeight * currentIndex,
-          left: 0,
-          behavior: "smooth",
-        });
-      }
-    };
-    const outerDivRefCurrent = outerDivRef.current;
-    outerDivRefCurrent.addEventListener("wheel", wheelHandler);
-    return () => {
-      outerDivRefCurrent.removeEventListener("wheel", wheelHandler);
-    };
-  }, [currentIndex, currentPage, galleries, isFullscreen, currentHeight]);
-
-  const handleLikeButtonOn = async (id) => {
-    try {
-      const response = await axios.post(`${BASE_URL}api/galleries/like/${id}`);
-      if (response.data.like) {
-        //TODO
-      }
-    } catch (error) {
-      console.error("Error Posting Like");
-    }
-  };
-  const fetchNewPage = async () => {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}api/galleries?type=${currentType}&category=${currentCategory}&page=${currentPage}`
-      );
-      if (Array.isArray(response.data)) {
-        if (response.data.length === 0) {
-          // No more data available, set totalPageCount
-          // setTotalPageCount(currentPage);
+    const fetchGalleries = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}api/galleries?type=${currentType}&category=${currentCategory}&page=${currentPage}`
+        );
+        if (Array.isArray(response.data)) {
+          if (response.data.length === 0) {
+            // No more data available, set totalPageCount
+            setTotalPageCount(currentPage - 1);
+          } else {
+            // 데이터 잘 받아오면
+            console.log(response.data);
+            setGalleries(response.data);
+            setPageLength(response.data.length);
+          }
         } else {
-          console.log(response.data);
-          setGalleries(response.data);
+          console.error("응답이 배열이 아닙니다:", response.data);
         }
-      } else {
-        console.error("응답이 배열이 아닙니다:", response.data);
+      } catch (error) {
+        console.error("Error fetching Gallery data:", error);
       }
-    } catch (error) {
-      console.error("Error fetching Gallery data:", error);
+    };
+
+    fetchGalleries();
+
+    return () => {
+      // 여기에 정리 함수를 추가할 수 있습니다
+      // 예: clearTimeout(timer);
+    };
+  }, [currentPage, currentType, currentCategory, BASE_URL]);
+
+  const handleDownButtonClick = () => {
+    if (currentIndex === pageLength - 1) {
+      setCurrentPage((prev) => prev + 1);
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex((prev) => prev + 1);
     }
   };
 
-  useEffect(() => {
-    fetchNewPage();
-  }, [currentPage]);
-
-  const changePage = (isUpping) => {
-    if (isUpping) {
-      if (currentPage > 1) {
+  const handleUpButtonClick = () => {
+    if (currentIndex === 0) {
+      if (currentPage === 1) {
+        setCurrentIndex(0);
+      } else {
         setCurrentPage((prev) => prev - 1);
         setCurrentIndex(pageLength - 1);
-        outerDivRef.current.scrollTo({
-          top: currentHeight * currentIndex,
-          left: 0,
-          behavior: "smooth",
-        });
-      } else {
-        // Handle when at the first page
-        outerDivRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
       }
     } else {
-      if (currentPage < totalPageCount) {
-        setCurrentPage((prev) => prev + 1);
-        setCurrentIndex(0);
-        outerDivRef.current.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "smooth",
-        });
-      } else {
-        // Handle when at the last page
-        console.log("마지막 페이지에 도달했습니다.");
-        outerDivRef.current.scrollTo({
-          top: currentHeight * (totalPageCount - 1),
-          left: 0,
-          behavior: "smooth",
-        });
-      }
+      setCurrentIndex((prev) => prev - 1);
     }
   };
 
+  // 화면 구성
   return (
     <div
       className={styles.outer}
       ref={outerDivRef}
       style={{ height: isFullscreen ? "100vh" : "calc(100vh - 80px)" }}
     >
-      {galleries.map((gallery, index) => (
-        <div
-          className={styles.inner}
-          key={index}
-          
-        >
-          <div className={styles.bgImg}>
-            <img src={`http://${gallery.background_image}`} alt="배경 이미지" />
-          </div>
-          <div className={styles.mainPhoto}>
-            <img src={`http://${gallery.image}`} alt="메인 사진" />
-          </div>
-          <div
-            ref={infoBoxRef}
-            className={`${styles.infoBox} ${
-              infoBoxHovered ? styles.hovered : ""
-            }`}
-          >
-            <div className={styles.userImage}>
+      {galleries
+        .filter((gallery, index) => index === currentIndex)
+        .map((gallery, index) => (
+          <div className={styles.inner} key={index}>
+            <div className={styles.bgImg}>
               <img
-                src={`http://${gallery.profile_image}`}
-                alt="User Profile Image"
+                src={`http://${gallery.background_image}`}
+                alt="배경 이미지"
               />
             </div>
-            <div className={styles.textContent}>
-              <div className={styles.title}>{gallery.title}</div>
-              <div className={styles.date}>{gallery.upload_date}</div>
+            <div className={styles.mainPhoto}>
+              <img src={`http://${gallery.image}`} alt="메인 사진" />
+            </div>
+            <div
+              ref={infoBoxRef}
+              className={`${styles.infoBox} ${
+                infoBoxHovered ? styles.hovered : ""
+              }`}
+            >
+              <div className={styles.userImage}>
+                <img
+                  src={`http://${gallery.profile_image}`}
+                  alt="User Profile Image"
+                />
+              </div>
+              <div className={styles.textContent}>
+                <div className={styles.title}>{gallery.title}</div>
+                <div className={styles.date}>{gallery.upload_date}</div>
+              </div>
+            </div>
+            <div className={styles.sideBtns}>
+              {isFullscreen ? (
+                <RoundButton
+                  onClick={exitFull}
+                  imageSrc={zoomOutIcon}
+                  alt="Fullscreen Off Button"
+                />
+              ) : (
+                <RoundButton
+                  onClick={triggerFull}
+                  imageSrc={zoomInIcon}
+                  alt="Fullscreen On Button"
+                />
+              )}
+              {gallery.like ? (
+                <RoundButton
+                  //   onClick={handleLikeButtonOn}
+                  imageSrc={likeRedIcon}
+                  alt="Liked Button"
+                />
+              ) : (
+                <RoundButton
+                  //   onClick={handleLikeButtonOn}
+                  imageSrc={likeBlackIcon}
+                  alt="Like Button"
+                />
+              )}
             </div>
           </div>
-          <div className={styles.sideBtns}>
-            {isFullscreen ? (
-              <RoundButton
-                onClick={exitFull}
-                imageSrc={zoomOutIcon}
-                alt="Fullscreen Off Button"
-              />
-            ) : (
-              <RoundButton
-                onClick={triggerFull}
-                imageSrc={zoomInIcon}
-                alt="Fullscreen On Button"
-              />
-            )}
-            {gallery.like ? (
-              <RoundButton
-                onClick={handleLikeButtonOn}
-                imageSrc={likeRedIcon}
-                alt="Liked Button"
-              />
-            ) : (
-              <RoundButton
-                onClick={handleLikeButtonOn}
-                imageSrc={likeBlackIcon}
-                alt="Like Button"
-              />
-            )}
-          </div>
-        </div>
-      ))}
+        ))}
+      <button className={styles.upBtn} onClick={handleUpButtonClick}>
+        <img src={prevIndexBtn} alt="이전" />
+      </button>
+      <button className={styles.dwnBtn} onClick={handleDownButtonClick}>
+        <img src={nextIndexBtn} alt="다음" />
+      </button>
     </div>
   );
 };
