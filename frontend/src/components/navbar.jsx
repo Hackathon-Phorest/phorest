@@ -17,7 +17,7 @@ const Navbar = ({
   currentCategory,
   displayCategory,
   displayTheme,
-  displayDivider,
+  showDivider,
 }) => {
   const isNormalTheme = colorTheme === "normal";
 
@@ -68,13 +68,14 @@ const Navbar = ({
           일러스트
         </div>
       </div>
-      <div
-        className={styles.divider}
-        style={{
-          backgroundColor: isNormalTheme ? "#00000033" : "#FFFFFF33",
-          display: displayDivider,
-        }}
-      />
+      {showDivider && (
+        <div
+          className={styles.divider}
+          style={{
+            backgroundColor: isNormalTheme ? "#00000033" : "#FFFFFF33",
+          }}
+        />
+      )}
       <div className={styles.categoryBox} style={{ display: displayCategory }}>
         <div
           className={styles.recommend}

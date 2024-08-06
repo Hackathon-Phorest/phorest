@@ -1,6 +1,7 @@
 import styles from "../styles/Main.module.css";
 import { useState, useEffect } from "react";
 import useHover2 from "../utils/useHover2";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import ArrowButton from "../components/ArrowButton";
@@ -95,7 +96,8 @@ const Main = ({
   };
 
   const enterClickHandler = () => {
-    alert(`${currentType},${currentCategory}`);
+    // alert(`${currentType},${currentCategory}`);
+    <Link to="/gallery"></Link>;
   };
 
   return (
@@ -149,17 +151,19 @@ const Main = ({
           alt="right arrow button"
         />
       </div>
-      <button
-        className={styles.enterButton}
-        ref={refEnterBtn}
-        onClick={enterClickHandler}
-      >
-        {enterBtnHovered ? (
-          <img src={enterButtonHover} alt="입장하기" />
-        ) : (
-          <img src={enterButtonNormal} alt="입장하기" />
-        )}
-      </button>
+      <Link to="/gallery">
+        <button
+          className={styles.enterButton}
+          ref={refEnterBtn}
+          onClick={enterClickHandler}
+        >
+          {enterBtnHovered ? (
+            <img src={enterButtonHover} alt="입장하기" />
+          ) : (
+            <img src={enterButtonNormal} alt="입장하기" />
+          )}
+        </button>
+      </Link>
     </div>
   );
 };

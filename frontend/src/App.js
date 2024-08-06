@@ -9,7 +9,7 @@ import axios from "axios";
 
 import Navbar from "./components/Navbar";
 import SignUp from "./routers/SignUp";
-import Gallery from "./routers/Gallery";
+import Gallery from "./routers/Gallery2";
 import Ranking from "./routers/Ranking";
 import Goods from "./routers/Goods";
 import Main from "./routers/Main";
@@ -60,7 +60,7 @@ function App() {
       location.pathname === "/" ? "transparent" : "normal";
     const navbarCategory = location.pathname === "/" ? "flex" : "none";
     const navbarTheme = location.pathname === "/" ? "flex" : "none";
-    const navbarDivider = location.pathname === "/" ? "flex" : "none";
+    const navbarShowDivider = location.pathname === "/" ? true : false;
     return (
       <Navbar
         isLoggedIn={isLoggedIn}
@@ -70,7 +70,7 @@ function App() {
         currentCategory={currentCategory}
         displayCategory={navbarCategory}
         displayTheme={navbarTheme}
-        displayDivier={navbarDivider}
+        showDivier={navbarShowDivider}
       />
     );
   };

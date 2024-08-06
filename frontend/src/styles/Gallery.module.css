@@ -47,10 +47,6 @@
   width: 60%;
   min-width: 600px;
   min-height: 400px;
-  box-shadow: 0px 388px 109px 0px rgba(0, 0, 0, 0),
-    0px 248px 99px 0px rgba(0, 0, 0, 0.01),
-    0px 140px 84px 0px rgba(0, 0, 0, 0.05),
-    0px 62px 62px 0px rgba(0, 0, 0, 0.09), 0px 16px 34px 0px rgba(0, 0, 0, 0.1);
   z-index: 2;
 }
 
@@ -58,6 +54,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  margin: 0;
+  /* border: 4px solid black; */
+  box-shadow: 0px 388px 109px 0px rgba(0, 0, 0, 0),
+    0px 248px 99px 0px rgba(0, 0, 0, 0.01),
+    0px 140px 84px 0px rgba(0, 0, 0, 0.05),
+    0px 62px 62px 0px rgba(0, 0, 0, 0.09), 0px 16px 34px 0px rgba(0, 0, 0, 0.1);
 }
 
 .infoBox {
@@ -121,4 +123,39 @@
 
 .infoBox:hover {
   opacity: 0.95;
+}
+
+.upBtn,
+.dwnBtn {
+  position: absolute;
+  width: 1200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  align-content: center;
+  flex-direction: column;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.upBtn {
+  top: 84px;
+  padding-bottom: 40px;
+}
+
+.dwnBtn {
+  bottom: 4px;
+  padding-top: 40px;
+}
+
+.upBtn img,
+.dwnBtn img {
+  opacity: 0.2; /* 기본 투명도 */
+  transition: opacity 0.3s; /* 투명도 변경 시 애니메이션 */
+}
+
+.upBtn:hover img,
+.dwnBtn:hover img {
+  opacity: 0.7; /* hover 시 투명도 */
 }

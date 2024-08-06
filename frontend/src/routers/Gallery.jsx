@@ -17,10 +17,10 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
   const { isFullscreen, triggerFull, exitFull } = useFullscreen(outerDivRef);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); // 1페이지부터 시작
-  const [pageLength, setPageLength] = useState(2);
+  const [pageLength, setPageLength] = useState(5);
   const [currentHeight, setCurrentHeight] = useState(window.innerHeight - 80);
   const [galleries, setGalleries] = useState([]);
-  const [totalPageCount, setTotalPageCount] = useState(2);
+  const [totalPageCount, setTotalPageCount] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,12 +40,13 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
 
       if (scrollTop <= 0 && deltaY < 0) {
         changePage(true);
+        console.log(scrollTop);
       } else if (scrollTop >= maxScrollTop && deltaY > 0) {
         changePage(false);
       } else {
         setCurrentIndex(Math.round(scrollTop / currentHeight));
         outerDivRef.current.scrollTo({
-          top: currentHeight * currentIndex + 80,
+          top: currentHeight * currentIndex,
           left: 0,
           behavior: "smooth",
         });
@@ -76,7 +77,7 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
       if (Array.isArray(response.data)) {
         if (response.data.length === 0) {
           // No more data available, set totalPageCount
-          setTotalPageCount(currentPage);
+          // setTotalPageCount(currentPage);
         } else {
           console.log(response.data);
           setGalleries(response.data);
@@ -99,7 +100,7 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
         setCurrentPage((prev) => prev - 1);
         setCurrentIndex(pageLength - 1);
         outerDivRef.current.scrollTo({
-          top: currentHeight * currentIndex + 80 * (currentIndex - 1),
+          top: currentHeight * currentIndex,
           left: 0,
           behavior: "smooth",
         });
@@ -114,8 +115,9 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
     } else {
       if (currentPage < totalPageCount) {
         setCurrentPage((prev) => prev + 1);
+        setCurrentIndex(0);
         outerDivRef.current.scrollTo({
-          top: currentHeight * currentPage,
+          top: 0,
           left: 0,
           behavior: "smooth",
         });
@@ -138,7 +140,11 @@ const Gallery = ({ currentType, currentCategory, BASE_URL }) => {
       style={{ height: isFullscreen ? "100vh" : "calc(100vh - 80px)" }}
     >
       {galleries.map((gallery, index) => (
-        <div className={styles.inner} key={index}>
+        <div
+          className={styles.inner}
+          key={index}
+          
+        >
           <div className={styles.bgImg}>
             <img src={`http://${gallery.background_image}`} alt="배경 이미지" />
           </div>
